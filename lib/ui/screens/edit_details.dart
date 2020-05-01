@@ -27,15 +27,7 @@ class _EditDetailsState extends State<EditDetails> {
 
   @override
   void initState() {
-    if (widget.from == 0) {
-      _dobController.text = widget.data.dateOfBirth;
-      _mobileController.text = widget.data.phoneNo;
-      _emailController.text = widget.data.email;
-      _fnameController.text = widget.data.firstName;
-      _lnameController.text = widget.data.lastName;
-      _gender = widget.data.gender;
-    }
-
+    initialLoad();
     super.initState();
   }
 
@@ -198,6 +190,18 @@ class _EditDetailsState extends State<EditDetails> {
         ),
       ),
     );
+  }
+
+  //function called during initState of this stateful widget
+  initialLoad() {
+    if (widget.from == 0) {
+      _dobController.text = widget.data.dateOfBirth;
+      _mobileController.text = widget.data.phoneNo;
+      _emailController.text = widget.data.email;
+      _fnameController.text = widget.data.firstName;
+      _lnameController.text = widget.data.lastName;
+      _gender = widget.data.gender;
+    }
   }
 
   validate(String value) {

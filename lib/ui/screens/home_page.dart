@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    //fetch all user details
     userBloc.getAllUsers();
     super.initState();
   }
@@ -82,6 +83,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // bifurcating data for both tabs
   bifurcateData(UserModel data) {
     homeTabData = data;
     DbFactory().favouritesDb.getFavouritesId().then((onValue) {
@@ -90,13 +92,15 @@ class _HomePageState extends State<HomePage> {
         onValue.forEach((f) {
           for (int i = 0; i < data.data.length; i++) {
             if (homeTabData.data[i].id == f) {
-              homeTabData.data[i].isFavourite = true;
+              homeTabData.data[i].isFavourite =
+                  true; //making isFavourite to true
               break;
             }
           }
         });
       });
     });
+    //fetch favourites from local Db
     DbFactory().favouritesDb.getFavourites().then((onValue) {
       setState(() {
         favouriteTabData = onValue;

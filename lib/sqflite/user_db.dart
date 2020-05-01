@@ -16,6 +16,7 @@ class UserDb {
           "date_of_birth TEXT, "
           "phone_no TEXT)";
 
+  //save the user details to local Db
   Future<void> saveUsers(UserModel userModel) async {
     var dbClient = await dbHelper.db;
     try {
@@ -36,6 +37,7 @@ class UserDb {
     }
   }
 
+  //fetch all user details from local Db during offline
   getAllUsers() async {
     var dbClient = await dbHelper.db;
     List<Map> map = await dbClient.rawQuery("SELECT * FROM $userTable");
@@ -47,6 +49,7 @@ class UserDb {
     return UserModel(data: list);
   }
 
+  //clear table for updating with latest value
   Future<dynamic> clearUserTable() async {
     var dbClient = await dbHelper.db;
     await dbClient.delete(userTable);

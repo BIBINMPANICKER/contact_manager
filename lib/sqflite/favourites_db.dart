@@ -10,6 +10,7 @@ class FavouritesDb {
       favouritesTable +
       "(Id INTEGER PRIMARY KEY, UserId TEXT)";
 
+  // get my favourite's ids from local Db
   Future<List<String>> getFavouritesId() async {
     var dbClient = await dbHelper.db;
     List<Map> map = await dbClient.rawQuery("SELECT * FROM $favouritesTable");
@@ -21,6 +22,7 @@ class FavouritesDb {
     return list;
   }
 
+  // get my favourite's data from local Db
   Future<UserModel> getFavourites() async {
     var dbClient = await dbHelper.db;
     List<Map> map = await dbClient.rawQuery(
@@ -38,12 +40,14 @@ class FavouritesDb {
     return UserModel(data: list);
   }
 
+  //add new favourite to local Db
   Future<dynamic> addFavourite(String id) async {
     var dbClient = await dbHelper.db;
     await dbClient
         .rawQuery("INSERT INTO $favouritesTable (UserId)VALUES ('$id')");
   }
 
+  //delete favourite from local Db
   Future<dynamic> deleteFavourite(String id) async {
     var dbClient = await dbHelper.db;
     await dbClient.rawDelete("DELETE FROM $favouritesTable WHERE UserId='$id'");

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:contact_manager/models/user_model.dart';
+import 'package:contact_manager/utils/constants.dart';
 import 'package:contact_manager/utils/db_factory.dart';
 import 'package:contact_manager/utils/object_factory.dart';
 import 'package:contact_manager/utils/utils.dart';
@@ -14,9 +15,13 @@ class UserBloc extends BaseBloc {
 
   Stream<UserModel> get getUsers => _userSink.stream;
 
+  //fetch all user details
   Future<UserModel> getAllUsers() async {
     UserModel userResponse;
+
+    //checking the internet connectivity
     var connectivityResult = await (Connectivity().checkConnectivity());
+    //if there is internet
     if (connectivityResult != ConnectivityResult.none) {
       userResponse = await ObjectFactory().repository.getAllUsers();
       if (userResponse != null) {
@@ -24,9 +29,10 @@ class UserBloc extends BaseBloc {
         DbFactory().userDb.clearUserTable();
         DbFactory().userDb.saveUsers(userResponse);
       } else {
-        _userSink..addError('Eooro occured');
+        _userSink..addError(Constants.SOME_ERROR_OCCURED);
       }
     } else {
+      //if no connectivity, then data is loaded from local sqlite database
       userResponse = await DbFactory().userDb.getAllUsers();
       _userSink.sink.add(userResponse);
     }
@@ -34,12 +40,13 @@ class UserBloc extends BaseBloc {
     return userResponse;
   }
 
+  //edit a user
   Future<void> editUser(id, userModel) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
       await ObjectFactory().repository.editUser(id, userModel);
     } else {
-      showToast('Check your connectivity');
+      showToast(Constants.CHECK_YOUR_CONNECTIVITY);
     }
   }
 
@@ -48,7 +55,7 @@ class UserBloc extends BaseBloc {
     if (connectivityResult != ConnectivityResult.none) {
       await ObjectFactory().repository.addUser(userModel);
     } else {
-      showToast('Check your connectivity');
+      showToast(Constants.CHECK_YOUR_CONNECTIVITY);
     }
   }
 
@@ -57,7 +64,7 @@ class UserBloc extends BaseBloc {
     if (connectivityResult != ConnectivityResult.none) {
       await ObjectFactory().repository.deleteUser(id);
     } else {
-      showToast('Check your connectivity');
+      showToast(Constants.CHECK_YOUR_CONNECTIVITY);
     }
   }
 

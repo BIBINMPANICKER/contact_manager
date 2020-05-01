@@ -46,18 +46,22 @@ class ApiClient {
     ));
   }
 
+  //fetch all users & details
   Future<Response> getAllUsers() async {
     return dio.get("/api/v1/user/");
   }
 
+  //edit a user
   Future<Response> editUser(id, userModel) async {
     return dio.put("/api/v1/user/$id", data: userModel);
   }
 
+  //add new user
   Future<Response> addUser(userModel) async {
     return dio.post("/api/v1/user", data: userModel);
   }
 
+  //delete an existing user
   Future<Response> deleteUser(id) async {
     return dio.delete("/api/v1/user/$id");
   }
